@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 function Table() {
-  const [dataAPI, setDataAPI] = useState([]);
+  const [dataPlanets, setDataPlanets] = useState([]);
   const [valueInput, setValueInput] = useState('');
   const [filteredData, setFilteredData] = useState({
     searchFiltered: [],
@@ -15,7 +15,8 @@ function Table() {
     const fetchPlanets = async () => {
       const response = await fetch('https://swapi.dev/api/planets');
       const data = await response.json();
-      setDataAPI(data.results);
+      // const dataResults = data.results;
+      setDataPlanets(data.results.filter((key) => delete key.residents));
     };
     fetchPlanets();
   }, []);
@@ -24,9 +25,7 @@ function Table() {
     'Diâmetro', 'Clima', 'Gravidade', 'Tipo de terreno', 'Água?', 'População',
     'Films', 'Criação', 'Edição', 'Imagem'];
 
-  const planets = dataAPI.filter((key) => delete key.residents);
-
-  const filteredPlanets = planets.filter((planet) => planet.name
+  const filteredPlanets = dataPlanets.filter((planet) => planet.name
     .toLowerCase().includes(valueInput.toLowerCase()));
 
   const handleChange = ({ target }) => {
@@ -37,43 +36,31 @@ function Table() {
   };
 
   const handleClick = () => {
+    let filtered = [];
+    const isFilter = filteredData.isCliked
+      ? filteredData.searchFiltered : filteredPlanets;
+
     if (filteredData.comparison === 'maior que') {
-      const filtered = filteredPlanets.filter((planet) => (
+      filtered = isFilter.filter((planet) => (
         +planet[filteredData.column] > +filteredData.inputNumber
       ));
-      setFilteredData({
-        ...filteredData,
-        searchFiltered: filtered,
-        column: 'population',
-        comparison: 'maior que',
-        inputNumber: 0,
-        isCliked: true,
-      });
     } else if (filteredData.comparison === 'menor que') {
-      const filtered = filteredPlanets.filter((planet) => (
+      filtered = isFilter.filter((planet) => (
         +planet[filteredData.column] < +filteredData.inputNumber
       ));
-      setFilteredData({
-        ...filteredData,
-        searchFiltered: filtered,
-        column: 'population',
-        comparison: 'maior que',
-        inputNumber: 0,
-        isCliked: true,
-      });
-    } else {
-      const filtered = filteredPlanets.filter((planet) => (
+    } else if (filteredData.comparison === 'igual a') {
+      filtered = isFilter.filter((planet) => (
         +planet[filteredData.column] === +filteredData.inputNumber
       ));
-      setFilteredData({
-        ...filteredData,
-        searchFiltered: filtered,
-        column: 'population',
-        comparison: 'maior que',
-        inputNumber: 0,
-        isCliked: true,
-      });
     }
+    setFilteredData({
+      ...filteredData,
+      searchFiltered: filtered,
+      column: 'population',
+      comparison: 'maior que',
+      inputNumber: 0,
+      isCliked: true,
+    });
   };
 
   return (
@@ -190,7 +177,6 @@ function Table() {
             )
         }
       </table>
-
     </div>
   );
 }
