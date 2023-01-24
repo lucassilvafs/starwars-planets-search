@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@sheerun/mutationobserver-shim": "0.3.3",
-    "cypress": "^10.11.0",
+    "cypress": "^12.3.0",
     "cypress-multi-reporters": "^1.6.2",
     "eslint-config-trybe-frontend": "1.5.0",
     "mocha": "^10.2.0",
