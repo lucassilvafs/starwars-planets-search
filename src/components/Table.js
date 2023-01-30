@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import InputRadio from './InputRadio';
 import TableBody from './TableBody';
+import PlanetsContext from '../context/PlanetsContext';
+import PlanetsProvider from '../context/PlanetsProvider';
 
 const tableHeader = ['Nome', 'Tempo de rotação', 'Tempo de órbita',
   'Diâmetro', 'Clima', 'Gravidade', 'Tipo de terreno', 'Água?', 'População',
@@ -9,8 +12,10 @@ const tableColumns = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
 
 function Table() {
+  const { planetsData } = useContext(PlanetsContext);
   const [dataPlanets, setDataPlanets] = useState([]);
   const [arrayFilters, setArrayFilters] = useState([]);
+  // const [sortByColumn, setSortByColumn] = useState({});
   const [columnSort, setColumnSort] = useState(tableColumns[0]);
   const [valueInput, setValueInput] = useState('');
   const [filteredData, setFilteredData] = useState({
@@ -22,13 +27,7 @@ function Table() {
   });
 
   useEffect(() => {
-    const fetchPlanets = async () => {
-      const response = await fetch('https://swapi.dev/api/planets');
-      const data = await response.json();
-      // const dataResults = data.results;
-      setDataPlanets(data.results.filter((key) => delete key.residents));
-    };
-    fetchPlanets();
+    setDataPlanets(planetsData.results.filter((key) => delete key.residents));
   }, []);
 
   const filteredPlanets = dataPlanets.filter((planet) => planet.name
@@ -42,8 +41,6 @@ function Table() {
     let filtered = [];
     const isFilter = arrayFilters.length === 1
       ? filteredPlanets : filteredData.searchFiltered;
-
-    // console.log(filteredData.searchFiltered);
 
     arrayFilters.forEach((filter) => {
       if (filter.comparison === 'maior que') {
@@ -60,7 +57,6 @@ function Table() {
         ));
       }
     });
-    // console.log(filtered);
     setFilteredData({
       ...filteredData,
       searchFiltered: filtered,
@@ -73,9 +69,6 @@ function Table() {
 
   const handleLoadAllData = () => {
     let filtered = [];
-    // const isFilter = filteredData.isCliked
-    //   ? filteredData.searchFiltered : filteredPlanets;
-
     if (filteredData.comparison === 'maior que') {
       filtered = filteredPlanets.filter((planet) => (
         +planet[filteredData.column] > +filteredData.valueNumber
@@ -100,7 +93,6 @@ function Table() {
   };
 
   useEffect(() => {
-    // console.log(arrayFilters);
     if (arrayFilters.length > 0) {
       handleFilter();
     } else {
@@ -114,7 +106,6 @@ function Table() {
       [target.name]: target.value,
     });
   };
-  // const handleTest = () => console.log(arrayFilters);
 
   const handleClick = () => {
     setArrayFilters([...arrayFilters,
@@ -126,7 +117,7 @@ function Table() {
   };
 
   return (
-    <div>
+    <PlanetsProvider>
       <section>
         <input
           type="text"
@@ -214,54 +205,21 @@ function Table() {
         </button>
       </section>
 
-      <form
-        onSubmit={ handleSort }
-      >
-        <label htmlFor="column">
-          Coluna
-          <select
-            id="column"
-            name="column"
-            value={ columnSort }
-            data-testid="column-sort"
-            onChange={ ({ target }) => setColumnSort(target.value) }
-          >
-            {columnFiltered.map((column) => (
-              <option key={ `index-${column}` } value={ column }>{ column }</option>
-            ))}
-          </select>
-        </label>
-        <label htmlFor="directionSort1">
-          <input
-            data-testid="column-sort-input-asc"
-            id="directionSort1"
-            type="radio"
-            name="directionSort"
-            value="ASC"
-            checked={ directionSort === 'ASC' }
-            onChange={ ({ target }) => setDirectionSort(target.value) }
-          />
-          Ascendente
-        </label>
-        <label htmlFor="directionSort2">
-          <input
-            data-testid="column-sort-input-desc"
-            id="directionSort2"
-            type="radio"
-            name="directionSort"
-            value="DESC"
-            onChange={ ({ target }) => setDirectionSort(target.value) }
-          />
-          Descendente
-        </label>
-
-        <button
-          type="submit"
-          data-testid="column-sort-button"
+      <label htmlFor="column">
+        Coluna
+        <select
+          id="column"
+          name="column"
+          value={ columnSort }
+          data-testid="column-sort"
+          onChange={ ({ target }) => setColumnSort(target.value) }
         >
-          Ordenar
-        </button>
-      </form>
+          {columnFiltered.map((column) => (
+            <option key={ `index-${column}` } value={ column }>{ column }</option>
+          ))}
+        </select>
+      </label>
+      <InputRadio />
 
       <table>
         <thead>
@@ -283,7 +241,7 @@ function Table() {
           }
         </tbody>
       </table>
-    </div>
+    </PlanetsProvider>
   );
 }
 
