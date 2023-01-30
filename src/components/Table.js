@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import InputRadio from './InputRadio';
 import TableBody from './TableBody';
-import PlanetsContext from '../context/PlanetsContext';
-import PlanetsProvider from '../context/PlanetsProvider';
 
 const tableHeader = ['Nome', 'Tempo de rotação', 'Tempo de órbita',
   'Diâmetro', 'Clima', 'Gravidade', 'Tipo de terreno', 'Água?', 'População',
@@ -12,7 +10,6 @@ const tableColumns = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
 
 function Table() {
-  const { planetsData } = useContext(PlanetsContext);
   const [dataPlanets, setDataPlanets] = useState([]);
   const [arrayFilters, setArrayFilters] = useState([]);
   // const [sortByColumn, setSortByColumn] = useState({});
@@ -27,7 +24,12 @@ function Table() {
   });
 
   useEffect(() => {
-    setDataPlanets(planetsData.results.filter((key) => delete key.residents));
+    const fetchPlanets = async () => {
+      const response = await fetch('https://swapi.dev/api/planets');
+      const data = await response.json(); // const dataResults = data.results;
+      setDataPlanets(data.results.filter((key) => delete key.residents));
+    };
+    fetchPlanets();
   }, []);
 
   const filteredPlanets = dataPlanets.filter((planet) => planet.name
@@ -117,7 +119,7 @@ function Table() {
   };
 
   return (
-    <PlanetsProvider>
+    <div>
       <section>
         <input
           type="text"
@@ -181,7 +183,6 @@ function Table() {
         { arrayFilters
         && arrayFilters.map((data, index) => (
           <div key={ `data-${index}` }>
-            {/* <p data-testid="data"></p> */}
             <p data-testid="filter">
               { `${data.column} ${data.comparison} ${data.valueNumber}` }
               <button
@@ -241,7 +242,7 @@ function Table() {
           }
         </tbody>
       </table>
-    </PlanetsProvider>
+    </div>
   );
 }
 
