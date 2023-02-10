@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 function InputRadio() {
   const [directionSort, setDirectionSort] = useState('ASC');
@@ -31,7 +31,7 @@ function InputRadio() {
       <button
         type="button"
         data-testid="column-sort-button"
-        // onClick={ handleSort }
+        onClick={ () => handleSort(directionSort) }
       >
         Ordenar
       </button>

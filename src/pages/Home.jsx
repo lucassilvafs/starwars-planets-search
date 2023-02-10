@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import InputRadio from './InputRadio';
-import TableBody from './TableBody';
-
-const tableHeader = ['Nome', 'Tempo de rotação', 'Tempo de órbita',
-  'Diâmetro', 'Clima', 'Gravidade', 'Tipo de terreno', 'Água?', 'População',
-  'Films', 'Criação', 'Edição', 'Imagem'];
+import InputRadio from '../components/InputRadio';
+// import TableBody from './TableBody';
+// import TableHead from './TableHead';
 
 const tableColumns = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
@@ -118,6 +115,10 @@ function Table() {
     ]);
   };
 
+  const handleSort = (directionSort) => {
+    setSortByColumn({ order: { column: columnSort, sort: directionSort } });
+  };
+
   return (
     <div>
       <section>
@@ -220,28 +221,10 @@ function Table() {
           ))}
         </select>
       </label>
-      <InputRadio />
+      <InputRadio handleSort={ handleSort } />
 
-      <table>
-        <thead>
-          <tr>
-            { tableHeader.map((name) => (
-              <th key={ name }>{ name }</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {
-            !filteredData.isCliked
-              ? (filteredPlanets.map((planet) => (
-                <TableBody key={ planet.name } planet={ planet } />
-              )))
-              : (filteredData.searchFiltered.map((planet) => (
-                <TableBody key={ planet.name } planet={ planet } />
-              )))
-          }
-        </tbody>
-      </table>
+      <Table filteredData={ filteredData } filteredPlanets={ filteredPlanets } />
+
     </div>
   );
 }
