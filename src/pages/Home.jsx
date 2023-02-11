@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import Table from '../components/Table';
 import InputRadio from '../components/InputRadio';
-// import TableBody from './TableBody';
-// import TableHead from './TableHead';
 
 const tableColumns = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
 
-function Table() {
+function Home() {
   const [dataPlanets, setDataPlanets] = useState([]);
   const [arrayFilters, setArrayFilters] = useState([]);
-  // const [sortByColumn, setSortByColumn] = useState({});
+  const [sortByColumn, setSortByColumn] = useState(
+    { order: { column: 'population', sort: 'ASC' } },
+  );
   const [columnSort, setColumnSort] = useState(tableColumns[0]);
   const [valueInput, setValueInput] = useState('');
   const [filteredData, setFilteredData] = useState({
@@ -68,19 +69,18 @@ function Table() {
 
   const handleLoadAllData = () => {
     let filtered = [];
-    if (filteredData.comparison === 'maior que') {
-      filtered = filteredPlanets.filter((planet) => (
-        +planet[filteredData.column] > +filteredData.valueNumber
-      ));
-    } else if (filteredData.comparison === 'menor que') {
-      filtered = filteredPlanets.filter((planet) => (
-        +planet[filteredData.column] < +filteredData.valueNumber
-      ));
-    } else if (filter.comparison === 'igual a') { // if (filter.comparison === 'igual a')
-      filtered = filteredPlanets.filter((planet) => (
-        +planet[filteredData.column] === +filteredData.valueNumber
-      ));
-    }
+    filtered = filteredPlanets.filter((planet) => (
+      +planet[filteredData.column] > +filteredData.valueNumber
+    ));
+    // else if (filteredData.comparison === 'menor que') {
+    //   filtered = filteredPlanets.filter((planet) => (
+    //     +planet[filteredData.column] < +filteredData.valueNumber
+    //   ));
+    // } else if (filter.comparison === 'igual a') { // if (filter.comparison === 'igual a')
+    //   filtered = filteredPlanets.filter((planet) => (
+    //     +planet[filteredData.column] === +filteredData.valueNumber
+    //   ));
+    // }
     setFilteredData({
       ...filteredData,
       searchFiltered: filtered,
@@ -114,6 +114,21 @@ function Table() {
       },
     ]);
   };
+
+  useEffect(() => {
+    const { order: { column, sort } } = sortByColumn;
+    const toSort = [...dataPlanets];
+    toSort.sort((a, b) => {
+      if (sort === 'ASC') {
+        return a[column] - b[column];
+      }
+      return b[column] - a[column];
+    });
+    const top = toSort.filter((e) => e[column] !== 'unknown');
+    const bot = toSort.filter((e) => e[column] === 'unknown');
+    const sortedPlanets = [...top, ...bot];
+    setDataPlanets(sortedPlanets);
+  }, [sortByColumn]);
 
   const handleSort = (directionSort) => {
     setSortByColumn({ order: { column: columnSort, sort: directionSort } });
@@ -229,4 +244,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default Home;

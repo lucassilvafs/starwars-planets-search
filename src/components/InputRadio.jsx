@@ -1,6 +1,7 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
-function InputRadio() {
+function InputRadio({ handleSort }) {
   const [directionSort, setDirectionSort] = useState('ASC');
   return (
     <div>
@@ -38,5 +39,9 @@ function InputRadio() {
     </div>
   );
 }
+
+InputRadio.propTypes = {
+  handleSort: PropTypes.func.isRequired,
+};
 
 export default InputRadio;
