@@ -1,35 +1,35 @@
-// import PropTypes from 'prop-types';
-// import { useEffect, useMemo } from 'react';
-// import useFetch from '../hooks/useFetch';
-// import PlanetsContext from './PlanetsContext';
+import PropTypes from 'prop-types';
+import { useEffect, useMemo } from 'react';
+import useFetch from '../hooks/useFetch';
+import PlanetsContext from './PlanetsContext';
 
-// function PlanetsProvider({ children }) {
-//   const { data: planetsData, loading, error, fetchData } = useFetch();
+function PlanetsProvider({ children }) {
+  const { data: planetsData, loading, error, fetchData } = useFetch();
 
-//   useEffect(() => {
-//     async function makeFetch() {
-//       await fetchData('https://swapi.dev/api/planets');
-//     }
+  useEffect(() => {
+    async function makeFetch() {
+      await fetchData('https://swapi.dev/api/planets');
+    }
 
-//     makeFetch();
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
+    makeFetch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-//   const value = useMemo(() => ({
-//     planetsData,
-//     loading,
-//     error,
-//   }), [planetsData, loading, error]);
+  const value = useMemo(() => ({
+    planetsData,
+    loading,
+    error,
+  }), [planetsData, loading, error]);
 
-//   return (
-//     <PlanetsContext.Provider value={ value }>
-//       {children}
-//     </PlanetsContext.Provider>
-//   );
-// }
+  return (
+    <PlanetsContext.Provider value={ value }>
+      {children}
+    </PlanetsContext.Provider>
+  );
+}
 
-// PlanetsProvider.propTypes = {
-//   children: PropTypes.shape(),
-// }.isReqired;
+PlanetsProvider.propTypes = {
+  children: PropTypes.shape(),
+}.isReqired;
 
-// export default PlanetsProvider;
+export default PlanetsProvider;
