@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Filters({ arrayFilters, setArrayFilters, tableColumnBr }) {
   return (
@@ -24,5 +25,21 @@ function Filters({ arrayFilters, setArrayFilters, tableColumnBr }) {
     </>
   );
 }
+
+Filters.propTypes = {
+  arrayFilters: PropTypes.arrayOf(PropTypes.shape({
+    column: PropTypes.string,
+    comparison: PropTypes.string,
+    valueNumber: PropTypes.number,
+  })).isRequired,
+  setArrayFilters: PropTypes.func.isRequired,
+  tableColumnBr: PropTypes.shape({
+    population: PropTypes.string,
+    orbital_period: PropTypes.string,
+    diameter: PropTypes.string,
+    rotation_period: PropTypes.string,
+    surface_water: PropTypes.string,
+  }).isRequired,
+};
 
 export default Filters;

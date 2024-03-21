@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import '../styles/Table.css';
-// import InputRadio from './InputRadio';
-// import TableBody from './TableBody';
-// import TableHead from './TableHead';
 
 const tableHeader = ['Nome', 'Tempo de rotação', 'Tempo de órbita',
   'Diâmetro', 'Clima', 'Gravidade', 'Tipo de terreno', 'Água', 'População',
