@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import "../styles/InputRadio.css";
+import '../styles/InputRadio.css';
 
 function InputRadio({ handleSort }) {
   const [directionSort, setDirectionSort] = useState('ASC');
@@ -17,7 +17,7 @@ function InputRadio({ handleSort }) {
             value="ASC"
             checked={ directionSort === 'ASC' }
             onChange={ ({ target }) => setDirectionSort(target.value) }
-            />
+          />
           Ascendente
         </label>
 

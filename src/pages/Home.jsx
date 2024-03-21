@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import Table from '../../components/Table';
-import InputRadio from '../../components/InputRadio';
-import { FaTimes } from "react-icons/fa";
-import './styles.css';
+import Table from '../components/Table';
+import InputRadio from '../components/InputRadio';
+import '../styles/Home.css';
+import Filters from '../components/Filters';
 
 const tableColumns = ['population', 'orbital_period', 'diameter',
   'rotation_period', 'surface_water'];
 
-const tableColumnsBr = {
+const tableColumnBr = {
   population: 'População',
   orbital_period: 'Tempo de órbita',
   diameter: 'Diâmetro',
   rotation_period: 'Tempo de rotação',
-  surface_water: 'Superfície da água'
+  surface_water: 'Superfície da água',
 };
 
 function Home() {
@@ -115,10 +115,10 @@ function Home() {
           valueNumber: filteredData.valueNumber,
         },
       ]);
-      return
+      return;
     }
 
-    alert("Limite de filtros excedidas!");
+    alert('Limite de filtros excedido!');
   };
 
   useEffect(() => {
@@ -140,80 +140,72 @@ function Home() {
     setSortByColumn({ order: { column: columnSort, sort: directionSort } });
   };
 
-  const deleteFilter = (target) => {
-    console.log("entrei ui");
-    console.log(target.value);
-    setArrayFilters(arrayFilters.filter((e) => e.column !== target.value));
-    console.log(arrayFilters);
-    console.log("saí, thumbs up");
-  }
   return (
     <div className="container-principal">
-        <p className="title">Star Wars - Planetas</p>
-          <input
-            type="text"
-            className="form-control input-filter"
-            value={ valueInput }
-            placeholder="Buscar"
-            data-testid="name-filter"
-            onChange={ ({ target }) => setValueInput(target.value) }
-          />
+      <p className="title">Star Wars - Planetas</p>
+      <input
+        type="text"
+        className="form-control input-filter"
+        value={ valueInput }
+        placeholder="Buscar"
+        data-testid="name-filter"
+        onChange={ ({ target }) => setValueInput(target.value) }
+      />
       <div className="mid-container">
-          <label htmlFor="column">
-            Coluna
-            <select
-              id="column"
-              className="form-select"
-              name="column"
-              value={ filteredData.column }
-              data-testid="column-filter"
-              onChange={ handleChange }
-            >
-              {columnFiltered.map((column) => (
-                <option key={ `index-${column}` } value={ column }>{ tableColumnsBr[column] }</option>
-              ))}
-            </select>
-          </label>
-
-          <label htmlFor="comparison">
-            Operador
-            <select
-              name="comparison"
-              className="form-select"
-              id="comparison"
-              data-testid="comparison-filter"
-              value={ filteredData.comparison }
-              onChange={ handleChange }
-            >
-              <option value="maior que">maior que</option>
-              <option value="menor que">menor que</option>
-              <option value="igual a">igual a</option>
-            </select>
-          </label>
-
-          <label htmlFor="valueNumber">
-            Valor
-            <input
-              type="number"
-              className="form-control input-value"
-              name="valueNumber"
-              placeholder="Valor"
-              value={ filteredData.valueNumber }
-              data-testid="value-filter"
-              onChange={ handleChange }
-            />
-          </label>
-
-          <button
-            type="button"
-            data-testid="button-filter"
-            className="filter-button btn btn-outline-warning"
-            onClick={ handleClick }
+        <label htmlFor="column">
+          Coluna
+          <select
+            id="column"
+            className="form-select"
+            name="column"
+            value={ filteredData.column }
+            data-testid="column-filter"
+            onChange={ handleChange }
           >
-            Filtrar
-          </button>
+            {columnFiltered.map((column) => (
+              <option key={ `index-${column}` } value={ column }>
+                { tableColumnBr[column] }
+              </option>
+            ))}
+          </select>
+        </label>
+        <label htmlFor="comparison">
+          Operador
+          <select
+            name="comparison"
+            className="form-select"
+            id="comparison"
+            data-testid="comparison-filter"
+            value={ filteredData.comparison }
+            onChange={ handleChange }
+          >
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
+          </select>
+        </label>
+        <label htmlFor="valueNumber">
+          Valor
+          <input
+            type="number"
+            className="form-control input-value"
+            name="valueNumber"
+            placeholder="Valor"
+            value={ filteredData.valueNumber }
+            data-testid="value-filter"
+            onChange={ handleChange }
+          />
+        </label>
+        <button
+          type="button"
+          data-testid="button-filter"
+          className="filter-button btn btn-outline-warning"
+          onClick={ handleClick }
+        >
+          Filtrar
+        </button>
 
-        <hr width='2' size='80' color='white'/>
+        <hr width="2" size="80" color="white" />
 
         <label htmlFor="column">
           Ordenar por
@@ -226,44 +218,30 @@ function Home() {
             onChange={ ({ target }) => setColumnSort(target.value) }
           >
             {columnFiltered.map((column) => (
-              <option key={ `index-${column}` } value={ column }>{ tableColumnsBr[column] }</option>
+              <option key={ `index-${column}` } value={ column }>
+                { tableColumnBr[column] }
+              </option>
             ))}
           </select>
         </label>
-
         <InputRadio handleSort={ handleSort } />
-
-          <button
-            type="button"
-            data-testid="button-remove-filters"
-            className="btn btn-outline-warning button-remove-all"
-            onClick={ () => setArrayFilters([]) }
-          >
-            Remover todos os filtros
-          </button>
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          className="btn btn-outline-warning button-remove-all"
+          onClick={ () => setArrayFilters([]) }
+        >
+          Remover todos os filtros
+        </button>
       </div>
-
-      { arrayFilters.length > 0 
-        ? (<>
-          <p className="title-filter">Filtros</p>
-          {arrayFilters.map((data, index) => (
-            <div key={ `data-${index}` } className="filter-container">
-              <p className="text-filter" data-testid="filter">
-                { `${tableColumnsBr[data.column]} ${data.comparison} ${data.valueNumber}  ` }
-              </p>
-                <button
-                  type="button"
-                  className="button-remove"
-                  onClick={ ({ target }) => deleteFilter(target) }
-                  value={ data.column }
-                  data-testid="button-remove-filter"
-                >
-                  x
-                </button>
-            </div>
-          ))}
-          </>) : null }
-
+      { arrayFilters.length > 0
+        ? (
+          <Filters
+            arrayFilters={ arrayFilters }
+            setArrayFilters={ setArrayFilters }
+            tableColumnBr={ tableColumnBr }
+          />
+        ) : null }
       <Table filteredData={ filteredData } filteredPlanets={ filteredPlanets } />
     </div>
   );
