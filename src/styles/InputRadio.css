@@ -1,0 +1,27 @@
+.input-radio {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.radio-container {
+  display: flex;
+  flex-direction: row;
+}
+
+/* label {
+  margin-top: 10px;
+} */
+
+.radio-input-asc {
+  margin-bottom: 15px;
+}
+
+.button-sort {
+  align-self: flex-end;
+}
+
+button {
+  align-self: center;
+  height: 40px;
+}

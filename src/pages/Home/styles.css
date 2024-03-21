@@ -1,0 +1,95 @@
+html {
+  background-color: #1d1e1d;
+}
+
+.container-principal {
+  background-color: #1d1e1d;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-container {
+  display: flex;
+}
+
+.mid-container {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 0 20px;
+}
+
+.filter-container {
+  align-items: center;
+  align-self: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  width: 25%;
+}
+
+.filter-button {
+  margin-top: 22px;
+}
+
+label {
+  color: white;
+}
+
+.input-filter {
+  align-self: center;
+  max-width: 300px;
+}
+
+.input-value {
+  align-self: flex-end;
+  max-width: 100px;
+}
+
+.title {
+  align-self: center;
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.text-filter {
+  color: white;
+}
+
+.title-filter {
+  align-self: center;
+  color: white;  /* background-color: blueviolet; */
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.button-remove {
+  background-color: #1d1e1d;
+  border: 2px solid;
+  border-color: #ffc107;
+  border-radius: 100%;
+  color: #ffc107;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  height: auto;
+  margin-bottom: 15px;
+  margin-left: 15px;
+  padding: 0 10px 3px;
+  text-align: center;
+  transition: all 0.25s ease;
+  width: auto;
+}
+
+.button-remove:hover {
+  background-color: #ffc107;
+  color: black;
+}
+
+.button-remove-all {
+  margin-top: 20px;
+}
